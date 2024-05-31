@@ -1,0 +1,94 @@
+Name: LinuxApp-PRD
+Version: v1
+Description: Configuration pour une application de production sur Linux.
+NbRetry: 3
+Variables:
+  - Name: serverName
+    Value: MyLinuxServer
+  - Name: resourceGroup
+    Value: RG-LinuxApp-PRD
+
+Agents:
+  - Name: linuxAgent
+    Address: 127.0.0.1
+    Port: 12567
+    SslProtocol: tls12
+
+Authentications:
+  - Name: NONE
+
+SchedulingStart:
+  - Name: LinuxAppStart
+    Expression: 0 0 0 * * ? *
+
+SchedulingStop:
+  - Name: LinuxAppStop
+    Expression: 0 0 12 * * ? *
+
+Components:
+  - Name: LINUX-VM
+    DisplayName: Linux Virtual Machine
+    Agent:
+      AgentName: linuxAgent
+      AuthentificationName: NONE
+    Icon:
+      SystemName: network
+    Group: HOSTING
+    Description: Linux Virtual Machine for the application
+    Actions:
+      - Name: check Linux-VM
+        Type: check
+        Value: bash -c "systemctl status ssh"
+        Description: Vérifie si le service SSH est en cours d'exécution.
+      - Name: start Linux-VM
+        Type: start
+        Value: bash -c "systemctl start ssh"
+        Description: Démarre le service SSH.
+      - Name: stop Linux-VM
+        Type: stop
+        Value: bash -c "systemctl stop ssh"
+        Description: Arrête le service SSH.
+  - Name: LinuxApp
+    Agent:
+      AgentName: linuxAgent
+      AuthentificationName: NONE
+    CheckFrequency: 120
+    Icon:
+      SystemName: service
+    Group: APPLICATION
+    Description: Application tournant sur Linux.
+    Actions:
+      - Name: check LinuxApp
+        Type: check
+        Value: bash -c "pgrep MyAppProcess"
+        Description: Vérifie si le processus de l'application est en cours d'exécution.
+      - Name: start LinuxApp
+        Type: start
+        Value: bash -c "/usr/bin/MyAppProcess &"
+        Description: Démarre l'application.
+      - Name: stop LinuxApp
+        Type: stop
+        Value: bash -c "pkill MyAppProcess"
+        Description: Arrête l'application.
+  - Name: Apache-Server
+    Agent:
+      AgentName: linuxAgent
+      AuthentificationName: NONE
+    CheckFrequency: 5
+    Icon:
+      Url: https://link-to-icon
+    Group: WEB_SERVER
+    Description: Serveur Apache pour héberger des applications web.
+    Actions:
+      - Name: check Apache
+        Type: check
+        Value: bash -c "systemctl status apache2"
+        Description: Vérifie si le service Apache est en cours d'exécution.
+      - Name: start Apache
+        Type: start
+        Value: bash -c "systemctl start apache2"
+        Description: Démarre le service Apache.
+      - Name: stop Apache
+        Type: stop
+        Value: bash -c "systemctl stop apache2"
+        Description: Arrête le service Apache.

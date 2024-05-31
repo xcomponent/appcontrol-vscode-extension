@@ -1,0 +1,38 @@
+{
+    "Quartz Cron: Every Minute": {
+      "prefix": "quartz-every-minute",
+      "body": ["0 * * * * ? *"],
+      "description": "Every minute"
+    },
+    "Quartz Cron: Every Hour": {
+      "prefix": "quartz-every-hour",
+      "body": ["0 0 * * * ? *"],
+      "description": "Every hour"
+    },
+    "Quartz Cron: Every Day at Midnight": {
+      "prefix": "quartz-every-day-midnight",
+      "body": ["0 0 0 * * ? *"],
+      "description": "Every day at midnight"
+    },
+    "Quartz Cron: Every Day at Noon": {
+      "prefix": "quartz-every-day-noon",
+      "body": ["0 0 12 * * ? *"],
+      "description": "Every day at noon"
+    },
+    "Quartz Cron: Every Week": {
+      "prefix": "quartz-every-week",
+      "body": ["0 0 0 ? * 1 *"],
+      "description": "Every week"
+    },
+    "Quartz Cron: Every Month": {
+      "prefix": "quartz-every-month",
+      "body": ["0 0 0 1 * ? *"],
+      "description": "Every month"
+    },
+    "Quartz Cron: Every Year": {
+      "prefix": "quartz-every-year",
+      "body": ["0 0 0 1 1 ? *"],
+      "description": "Every year"
+    }
+  }
+  

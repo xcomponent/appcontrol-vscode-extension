@@ -1,0 +1,94 @@
+Name: WindowsApp-PRD
+Version: v1
+Description: Configuration pour une application de production sur Windows.
+NbRetry: 3
+Variables:
+  - Name: serverName
+    Value: MyWindowsServer
+  - Name: resourceGroup
+    Value: RG-WindowsApp-PRD
+
+Agents:
+  - Name: windowsAgent
+    Address: 127.0.0.1
+    Port: 12567
+    SslProtocol: tls12
+
+Authentications:
+  - Name: NONE
+
+SchedulingStart:
+  - Name: WindowsAppStart
+    Expression: 0 0 12 * * ? *
+
+SchedulingStop:
+  - Name: WindowsAppStop
+    Expression: 0 0 0 * * ? *
+
+Components:
+  - Name: WINDOWS-VM
+    DisplayName: Windows Virtual Machine
+    Agent:
+      AgentName: windowsAgent
+      AuthentificationName: NONE
+    CheckFrequency: 60
+    Icon:
+      SystemName: azure
+    Group: HOSTING
+    Description: Windows Virtual Machine for the application
+    Actions:
+      - Name: check Windows-VM
+        Type: check
+        Value: powershell -Command "Get-Service -Name wuauserv"
+        Description: Vérifie si le service Windows Update est en cours d'exécution.
+      - Name: start Windows-VM
+        Type: start
+        Value: powershell -Command "Start-Service -Name wuauserv"
+        Description: Démarre le service Windows Update.
+      - Name: stop Windows-VM
+        Type: stop
+        Value: powershell -Command "Stop-Service -Name wuauserv"
+        Description: Arrête le service Windows Update.
+  - Name: WindowsApp
+    Agent:
+      AgentName: windowsAgent
+      AuthentificationName: NONE
+    CheckFrequency: 5
+    Icon:
+      SystemName: process
+    Group: APPLICATION
+    Description: Application tournant sur Windows.
+    Actions:
+      - Name: check WindowsApp
+        Type: check
+        Value: powershell -Command "Get-Process -Name MyAppProcess"
+        Description: Vérifie si le processus de l'application est en cours d'exécution.
+      - Name: start WindowsApp
+        Type: start
+        Value: powershell -Command "Start-Process -Name MyAppProcess"
+        Description: Démarre l'application.
+      - Name: stop WindowsApp
+        Type: stop
+        Value: powershell -Command "Stop-Process -Name MyAppProcess"
+        Description: Arrête l'application.
+  - Name: IIS-Server
+    Agent:
+      AgentName: windowsAgent
+      AuthentificationName: NONE
+    Icon:
+      Url: https://link-to-icon
+    Group: WEB_SERVER
+    Description: Serveur IIS pour héberger des applications web.
+    Actions:
+      - Name: check IIS
+        Type: check
+        Value: powershell -Command "Get-Service -Name W3SVC"
+        Description: Vérifie si le service IIS est en cours d'exécution.
+      - Name: start IIS
+        Type: start
+        Value: powershell -Command "Start-Service -Name W3SVC"
+        Description: Démarre le service IIS.
+      - Name: stop IIS
+        Type: stop
+        Value: powershell -Command "Stop-Service -Name W3SVC"
+        Description: Arrête le service IIS.

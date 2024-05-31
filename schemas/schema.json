@@ -1,0 +1,456 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AppControl Configuration Schema",
+  "type": "object",
+  "properties": {
+    "Name": {
+      "type": "string",
+      "description": "The name of the service."
+    },
+    "Version": {
+      "type": "string",
+      "description": "The version of the service."
+    },
+    "Description": {
+      "type": "string",
+      "description": "Description of the service."
+    },
+    "NbRetry": {
+      "type": "integer",
+      "description": "Number of restart attempts."
+    },
+    "Variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "The name of the variable."
+          },
+          "Value": {
+            "type": "string",
+            "description": "The value of the variable."
+          }
+        },
+        "required": ["Name", "Value"]
+      }
+    },
+    "Agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "The name of the agent."
+          },
+          "Address": {
+            "type": "string",
+            "description": "The address of the agent."
+          },
+          "Port": {
+            "type": "integer",
+            "description": "The port of the agent."
+          },
+          "Gateway": {
+            "type": "string",
+            "description": "The gateway of the agent."
+          },
+          "DependsOnComponent": {
+            "type": "string",
+            "description": "The agent will be called only when the component will be started."
+          },
+          "SslProtocol": {
+            "type": "string",
+            "description": "The SSL protocol used by the agent.",
+            "enum": ["tls", "tls12", "tls13"],
+            "default": "tls12"
+          }
+        },
+        "required": ["Name", "Address", "Port", "SslProtocol"]
+      }
+    },
+    "Authentications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "The name of the authentication."
+          }
+        },
+        "required": ["Name"]
+      }
+    },
+    "SchedulingStart": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "The name of the start task."
+          },
+          "Expression": {
+            "type": "string",
+            "description": "Cron expression for scheduling."
+          }
+        },
+        "required": ["Name", "Expression"]
+      }
+    },
+    "SchedulingStop": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "The name of the stop task."
+          },
+          "Expression": {
+            "type": "string",
+            "description": "Cron expression for scheduling."
+          }
+        },
+        "required": ["Name", "Expression"]
+      }
+    },
+    "Components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "The name of the component."
+          },
+          "DisplayName": {
+            "type": "string",
+            "description": "Displayed name of the component."
+          },
+          "Agent": {
+            "type": "object",
+            "properties": {
+              "AgentName": {
+                "type": "string",
+                "description": "The name of the agent."
+              },
+              "AuthentificationName": {
+                "type": "string",
+                "description": "The name of the authentication."
+              }
+            },
+            "required": ["AgentName", "AuthentificationName"]
+          },
+          "CheckFrequency": {
+            "type": "integer",
+            "description": "Component check frequency in seconds"
+          },
+          "Icon": {
+            "type": "object",
+            "properties": {
+              "SystemName": {
+                "type": "string",
+                "description": "The system name of the icon.",
+                "enum": [
+                  "none",
+                  "browser",
+                  "cd",
+                  "chip",
+                  "dataInformation",
+                  "devises",
+                  "dollar",
+                  "euro",
+                  "file",
+                  "greenThermometer",
+                  "hdd",
+                  "memflash",
+                  "memory",
+                  "middleware",
+                  "network",
+                  "orangeThermometer",
+                  "pounds",
+                  "process",
+                  "service",
+                  "tools",
+                  "user",
+                  "yen",
+                  "xcomponent",
+                  "appcontrol",
+                  "azure",
+                  "rabbitmq",
+                  "elastic",
+                  "mysql",
+                  "nginx",
+                  "vmazure",
+                  "firewall",
+                  "sqlserver",
+                  "backup",
+                  "swagger",
+                  "document",
+                  "sharedfolder"
+                ]
+              },
+              "Url": {
+                "type": "string",
+                "description": "Icon URL."
+              }
+            }
+          },
+          "Group": {
+            "type": "string",
+            "description": "Component group."
+          },
+          "Description": {
+            "type": "string",
+            "description": "Component description."
+          },
+          "Actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string",
+                  "description": "The name of the action."
+                },
+                "Type": {
+                  "type": "string",
+                  "description": "The type of the action."
+                },
+                "Value": {
+                  "type": "string",
+                  "description": "The command of the action."
+                },
+                "RetryTime": {
+                  "type": "integer",
+                  "description": "Retry time."
+                },
+                "Visibility": {
+                  "type": "string",
+                  "enum": ["Private", "Public"],
+                  "description": "Action visibility."
+                },
+                "WaitAfter": {
+                  "type": "integer",
+                  "description": "Wait time after the action."
+                },
+                "Description": {
+                  "type": "string",
+                  "description": "Action description."
+                },
+                "InputParameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "string",
+                        "description": "The name of the parameter",
+                        "minLength": 1
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "The value of the parameter"
+                      },
+                      "Description": {
+                        "type": "string",
+                        "description": "The description of the parameter"
+                      },
+                      "CanEdit": {
+                        "type": "boolean",
+                        "description": "Indicates if the parameter can be edited",
+                        "default": true
+                      },
+                      "Validation": {
+                        "type": "string",
+                        "description": "The validation rule for the parameter"
+                      }
+                    },
+                    "required": ["Name"]
+                  }
+                },
+                "OutputParameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "string",
+                        "description": "The name of the parameter",
+                        "minLength": 1
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "The value of the parameter"
+                      },
+                      "Description": {
+                        "type": "string",
+                        "description": "The description of the parameter"
+                      },
+                      "CanEdit": {
+                        "type": "boolean",
+                        "description": "Indicates if the parameter can be edited",
+                        "default": true
+                      },
+                      "Validation": {
+                        "type": "string",
+                        "description": "The validation rule for the parameter"
+                      }
+                    },
+                    "required": ["Name"]
+                  }
+                },
+                "HypertextResources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "string",
+                        "description": "The name of the parameter",
+                        "minLength": 1
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "The value of the parameter"
+                      },
+                      "Description": {
+                        "type": "string",
+                        "description": "The description of the parameter"
+                      }
+                    }
+                  }
+                },
+                "Triggers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Name": {
+                        "type": "string",
+                        "description": "Name of the trigger",
+                        "minLength": 1
+                      },
+                      "Expression": {
+                        "type": "string",
+                        "description": "The cron expression (quartz format)"
+                      },
+                      "TimeZoneId": {
+                        "type": "string",
+                        "description": "Time zone identifier",
+                        "enum": [
+                          "Dateline Standard Time",
+                          "UTC-11",
+                          "Hawaiian Standard Time",
+                          "Alaskan Standard Time",
+                          "Pacific Standard Time",
+                          "Mountain Standard Time",
+                          "Central Standard Time",
+                          "Eastern Standard Time",
+                          "Atlantic Standard Time",
+                          "UTC-02",
+                          "Greenland Standard Time",
+                          "Central European Standard Time",
+                          "Eastern European Standard Time",
+                          "South Africa Standard Time",
+                          "Russian Standard Time",
+                          "Arabian Standard Time",
+                          "Iran Standard Time",
+                          "Indian Standard Time",
+                          "Central Asia Standard Time",
+                          "China Standard Time",
+                          "Tokyo Standard Time",
+                          "AUS Eastern Standard Time",
+                          "West Pacific Standard Time",
+                          "Tonga Standard Time"
+                        ]
+                      }
+                    },
+                    "required": ["Name"]
+                  }
+                }
+              },
+              "required": ["Name", "Type", "Value"]
+            },
+            "HypertextResources": {
+              "Name": {
+                "type": "string",
+                "description": "The name of the parameter",
+                "minLength": 1
+              },
+              "Value": {
+                "type": "string",
+                "description": "The value of the parameter"
+              },
+              "Description": {
+                "type": "string",
+                "description": "The description of the parameter"
+              }
+            }
+          },
+          "HypertextResource": {
+            "type": "string",
+            "description": "Link to documentation"
+          },
+          "HypertextResources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string",
+                  "description": "The name of the parameter",
+                  "minLength": 1
+                },
+                "Value": {
+                  "type": "string",
+                  "description": "The value of the parameter"
+                },
+                "Description": {
+                  "type": "string",
+                  "description": "The description of the parameter"
+                }
+              }
+            }
+          },
+          "NbRetry": {
+            "type": "integer",
+            "description": "Number of restart attempts."
+          },
+          "ParentNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string",
+                  "description": "The name of the parameter"
+                },
+                "Value": {
+                  "type": "string",
+                  "description": "The value of the parameter"
+                }
+              }
+            }
+          },
+          "InteractWithDesktop": {
+            "type": "boolean",
+            "description": "Only works in Windows. Allows the Windows agent running as a Windows service to interact with the desktop."
+          }
+        },
+        "required": ["Name", "Agent", "Description", "Actions"]
+      }
+    }
+  },
+  "required": ["Name", "Version", "Description", "NbRetry", "Agents", "Authentications", "Components"]
+}
